@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zoho to GoHighLevel, end to end: a case study by Brandon Tan</title>
+<meta name="description" content="How a five-tier coaching business was moved off Zoho One into GoHighLevel without dropping a signup, with the numbers read live from the account.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#fbf1e9; --cream-2:#f6e6da; --blush:#f3d3cf; --blush-2:#f8e4e1;
+    --wine:#8e2c46; --wine-2:#a83a57; --wine-deep:#6f2036;
+    --ink:#3a2229; --ink-2:#6b4b53; --ink-3:#9a7d84;
+    --white:#fffaf7; --line:#ecd9d3;
+    --green:#2c8a5a; --amber:#c47a1c;
+    --display:'Nunito',-apple-system,BlinkMacSystemFont,sans-serif;
+    --sans:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    --mono:'SF Mono',ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:76px}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+  a{color:var(--wine)}
+  .wrap{max-width:980px;margin:0 auto;padding:0 24px}
+
+  nav.top{position:sticky;top:0;z-index:50;background:rgba(251,241,233,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav.top .row{display:flex;align-items:center;gap:18px;height:60px}
+  nav.top .brand{font-family:var(--display);font-weight:900;color:var(--wine);font-size:1.05rem;letter-spacing:-.01em;white-space:nowrap}
+  nav.top .brand small{display:block;font-family:var(--sans);font-weight:600;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+  nav.top ul{list-style:none;margin:0 0 0 auto;padding:0;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+  nav.top ul::-webkit-scrollbar{display:none}
+  nav.top a{display:block;padding:7px 11px;border-radius:100px;font-size:.82rem;font-weight:600;color:var(--ink-2);text-decoration:none;white-space:nowrap}
+  nav.top a:hover,nav.top a.on{background:var(--blush-2);color:var(--wine)}
+
+  .hero{position:relative;overflow:hidden;padding:88px 0 64px}
+  .hero .blob{position:absolute;border-radius:50%;background:var(--blush);z-index:0}
+  .hero .b1{width:560px;height:560px;right:-160px;top:-260px}
+  .hero .b2{width:340px;height:340px;left:-180px;bottom:-200px;background:var(--blush-2)}
+  .hero .wrap{position:relative;z-index:1}
+  .eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--wine)}
+  h1{font-family:var(--display);font-weight:900;font-size:clamp(2.6rem,7vw,4.6rem);line-height:.98;letter-spacing:-.02em;color:var(--wine);margin:14px 0 20px;max-width:14ch}
+  .sub{font-size:1.2rem;color:var(--ink-2);max-width:620px;margin:0 0 26px}
+  .byline{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:.92rem;color:var(--ink-3)}
+  .byline b{color:var(--ink)}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:44px}
+  .stat{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:18px 16px;box-shadow:0 6px 24px rgba(142,44,70,.06)}
+  .stat .n{font-family:var(--display);font-weight:900;font-size:2rem;color:var(--wine);letter-spacing:-.02em;line-height:1}
+  .stat .k{font-size:.8rem;color:var(--ink-3);margin-top:6px;text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+  @media (max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+  section{padding:64px 0}
+  section.alt{background:var(--cream-2)}
+  section.wine{background:var(--wine);color:var(--white)}
+  section.wine h2,section.wine .kicker,section.wine p,section.wine h3{color:var(--white)}
+  section.wine .kicker{color:var(--blush)}
+  .kicker{font-size:.76rem;letter-spacing:.2em;text-transform:uppercase;color:var(--wine);font-weight:700;margin-bottom:10px}
+  h2{font-family:var(--display);font-weight:900;font-size:clamp(1.8rem,3.4vw,2.5rem);line-height:1.1;letter-spacing:-.015em;color:var(--ink);margin:0 0 18px;max-width:22ch}
+  h3{font-family:var(--display);font-weight:800;font-size:1.15rem;color:var(--ink);margin:0 0 8px}
+  p{margin:0 0 16px;color:var(--ink-2)}
+  .lead{font-size:1.12rem;color:var(--ink);max-width:720px}
+  .mono{font-family:var(--mono);font-size:.85em}
+
+  .checks{list-style:none;padding:0;margin:20px 0;display:grid;gap:12px}
+  .checks li{position:relative;padding-left:42px;font-weight:600;color:var(--ink);font-size:1.02rem;min-height:28px}
+  .checks li::before{content:"✓";position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--wine);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:900}
+  .checks li span{font-weight:400;color:var(--ink-2);margin-left:6px}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px}
+  .step{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:22px 20px;box-shadow:0 6px 24px rgba(142,44,70,.05)}
+  .step .num{font-family:var(--display);font-weight:900;font-size:1.9rem;color:var(--wine);line-height:1;margin-bottom:10px}
+  .step h3{font-size:1.05rem;margin-bottom:6px}
+  .step p{font-size:.95rem;margin:0}
+  .step ul{margin:8px 0 0;padding-left:18px;font-size:.93rem;color:var(--ink-2)}
+  .step li{margin:5px 0}
+  @media (max-width:760px){.steps{grid-template-columns:1fr}}
+
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:22px 0}
+  .node{background:var(--white);border:2px solid var(--blush);border-radius:14px;padding:10px 16px;font-weight:700;color:var(--wine);font-size:.92rem}
+  .node.dim{border-style:dashed;color:var(--ink-3);text-decoration:line-through;font-weight:500}
+  .arrow{color:var(--ink-3);font-weight:700}
+
+  table{border-collapse:separate;border-spacing:0;width:100%;margin:18px 0;font-size:.95rem;background:var(--white);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  th,td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+  th{background:var(--blush-2);font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--wine);font-weight:700}
+  tr:last-child td{border-bottom:0}
+  td.was{color:var(--ink-3)}
+  td.now{font-weight:600;color:var(--ink)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:700;color:var(--wine)}
+  .scroll{overflow-x:auto}
+
+  .case{background:var(--white);border:1px solid var(--line);border-radius:22px;padding:28px;margin-bottom:18px;box-shadow:0 8px 30px rgba(142,44,70,.05)}
+  .case .tag{display:inline-block;font-size:.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:5px 11px;border-radius:100px;background:var(--blush-2);color:var(--wine);margin-bottom:12px}
+  .case .tag.bad{background:#fbe3e3;color:#a12b2b}
+  .case .tag.ok{background:#e2f3ea;color:var(--green)}
+  .case .meta{font-size:.82rem;color:var(--ink-3);margin-bottom:14px}
+  .case h3{font-size:1.3rem;line-height:1.25;margin-bottom:10px}
+  .case .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:14px}
+  .case .blk .t{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--wine);font-weight:700;margin-bottom:4px}
+  .case .blk p{font-size:.95rem;margin:0}
+  .case .out{margin-top:16px;padding:14px 16px;border-radius:14px;background:var(--cream);border:1px dashed var(--blush)}
+  .case .out .t{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green);font-weight:800;margin-bottom:4px}
+  .case .out p{margin:0;font-size:.95rem;color:var(--ink)}
+  @media (max-width:720px){.case .grid{grid-template-columns:1fr}.case{padding:22px}}
+
+  .vol{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+  .vol .c{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:18px;padding:18px}
+  .vol .n{font-family:var(--display);font-weight:900;font-size:2rem;color:#fff;line-height:1}
+  .vol .k{font-size:.88rem;color:var(--blush);margin-top:6px}
+  @media (max-width:720px){.vol{grid-template-columns:1fr 1fr}}
+
+  .circle{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:190px;height:190px;border-radius:50%;background:var(--wine);color:#fff;text-align:center;box-shadow:0 12px 30px rgba(142,44,70,.25);transform:rotate(-6deg)}
+  .circle .t{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--blush)}
+  .circle .n{font-family:var(--display);font-weight:900;font-size:2.6rem;line-height:1;margin:6px 0 2px}
+  .circle .k{font-size:.82rem;color:var(--blush)}
+  .split{display:grid;grid-template-columns:1.4fr 1fr;gap:30px;align-items:center}
+  @media (max-width:760px){.split{grid-template-columns:1fr}.circle{transform:none}}
+
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .tags span{background:var(--white);border:1px solid var(--line);border-radius:100px;padding:7px 13px;font-size:.86rem;font-weight:600;color:var(--ink-2)}
+
+  pre{background:var(--ink);color:#f7e6e8;border-radius:16px;padding:16px 18px;font-size:.8rem;line-height:1.55;overflow-x:auto;margin:14px 0 0}
+
+  .cta{text-align:center;padding:80px 0}
+  .cta h2{margin:0 auto 14px;max-width:18ch}
+  .btn{display:inline-block;background:var(--wine);color:#fff;font-weight:800;font-family:var(--display);padding:16px 28px;border-radius:100px;text-decoration:none;font-size:1.05rem;box-shadow:0 10px 26px rgba(142,44,70,.28)}
+  .btn.ghost{background:transparent;color:var(--wine);border:2px solid var(--wine);box-shadow:none;margin-left:8px}
+  footer{background:var(--wine-deep);color:var(--blush);padding:28px 0;font-size:.85rem}
+  footer .row{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+  @media print{nav.top{display:none}section{padding:28px 0}}
+</style>
+</head>
+<body>
+
+<nav class="top"><div class="wrap row">
+  <a class="brand" href="index.html" style="text-decoration:none">Brandon Tan<small>GHL Case Study</small></a>
+  <ul>
+    <li><a href="#brief">Brief</a></li>
+    <li><a href="#how">How it shipped</a></li>
+    <li><a href="#before">Before & after</a></li>
+    <li><a href="#files">Case files</a></li>
+    <li><a href="#limits">Platform limits</a></li>
+    <li><a href="#code">Code</a></li>
+    <li><a href="#docs">Docs</a></li>
+    <li><a href="#live">Verified live</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="index.html">← Portfolio</a></li>
+  </ul>
+</div></nav>
+
+<header class="hero">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="wrap">
+    <div class="eyebrow">Case study · CRM migration · Zoho One to GoHighLevel</div>
+    <h1>Moved a five-tier coaching business, live, without dropping a signup.</h1>
+    <p class="sub">Inspector Empire Builder ran its whole membership operation on Zoho One. A renewal date forced the cutover. This is what moving it into GoHighLevel actually took, with the numbers attached and re-read from the live account.</p>
+    <div class="byline"><span><b>Brandon Tan</b>, GoHighLevel &amp; Automation Specialist</span><span>April 2026 to present</span><span>Figures verified live 27 Sep 2026</span></div>
+    <div class="stats">
+      <div class="stat"><div class="n">4,256</div><div class="k">contacts live</div></div>
+      <div class="stat"><div class="n">93</div><div class="k">published workflows</div></div>
+      <div class="stat"><div class="n">27,627</div><div class="k">notes recovered</div></div>
+      <div class="stat"><div class="n">209</div><div class="k">scripts written</div></div>
+    </div>
+  </div>
+</header>
+
+<section id="brief">
+  <div class="wrap">
+    <div class="kicker">The brief</div>
+    <h2>Five tiers, three thousand members, one renewal date.</h2>
+    <p class="lead">IEB coaches home inspectors on running their businesses. Five membership tiers from $197 to $1,997 a month, sold through Kajabi, with everything else living in Zoho One: member records, lead pipelines, onboarding, retention, sponsors.</p>
+    <p>The renewal date made it a hard cutover rather than a gradual one. Kajabi stays as the course platform. Everything downstream of it, the CRM, the automation, the custom data model, and the audits that prove none of it silently broke, is the work.</p>
+    <ul class="checks">
+      <li>No dropped signups <span>during the move, on any of the five tiers</span></li>
+      <li>No missed onboarding call <span>while the kickoff booking flow changed platforms</span></li>
+      <li>No lost sponsor record <span>across a partner programme that was half in a spreadsheet</span></li>
+      <li>Everything archived <span>before anything in the old system was cancelled</span></li>
+    </ul>
+    <p>The part nobody scopes for is what you find on the way in. Most of what follows was not on the brief. It was found, proven and fixed because a migration forces you to read every record.</p>
+  </div>
+</section>
+
+<section class="alt" id="how">
+  <div class="wrap">
+    <div class="kicker">How it shipped</div>
+    <h2>Three phases, sequenced so nothing live ever waited on something unbuilt.</h2>
+    <div class="flow">
+      <span class="node">Kajabi checkout</span><span class="arrow">→</span><span class="node">Zapier</span><span class="arrow">→</span><span class="node">GoHighLevel</span><span class="arrow">→</span><span class="node dim">Zoho One</span>
+    </div>
+    <p>That was the starting shape. By July the sale itself moved into GoHighLevel and the integration ran the other way, granting course access back to Kajabi. That one change is why membership data is now born clean at the point of sale instead of arriving secondhand.</p>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><h3>Members and onboarding</h3><p>May to June.</p>
+        <ul><li>Custom Member and Partner objects, associated to contacts, after the native Companies object could not power the reporting</li><li>348-contact migration with batch IDs, then 640 historical exit records so the cancellations chart read back to 2018</li><li>Onboarding spine 1.1 to 1.10, retention at day 60 to 300, the exit path with its guard tag</li><li>Five tier integrations, sending domain warmed and authenticated</li></ul></div>
+      <div class="step"><div class="num">2</div><h3>Leads and funnels</h3><p>June to August.</p>
+        <ul><li>Lead Follow Up pipeline, owner rule by contact type, Meta Lead Ads with pixel and Conversions API</li><li>Four email funnels, 39 emails, rebuilt natively so staff can edit them</li><li>9,179-record reconciliation across three non-nested legacy sources, then a 1,552-row cold import that never touched a live sequence</li><li>Membership application with tier routing by inspector count</li></ul></div>
+      <div class="step"><div class="num">3</div><h3>Checkout, partners, reporting</h3><p>July to September.</p>
+        <ul><li>Native checkout on all five tiers, three weeks ahead of the vendor fix</li><li>Partner programme: 68 sponsor records reconciled 26 of 26 against the legacy system, magazine and video pipelines, a runbook for the partner manager</li><li>Growth dashboard on two more custom objects carrying two years of history</li><li>Final audit, plain-language ops guide, handoff to a retainer</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section id="before">
+  <div class="wrap">
+    <div class="kicker">Before and after</div>
+    <h2>What was broken, and what it is now.</h2>
+    <p>Each of these was found during the migration. None was on the original scope.</p>
+    <div class="scroll"><table>
+      <tr><th style="width:24%">The system</th><th>Before</th><th>After</th></tr>
+      <tr><td>Five years of call and customer notes</td><td class="was">2,646 notes on 547 of 3,850 contacts, roughly 5% of what Zoho held. The salesperson could see one in twenty-five of his own history.</td><td class="now">27,627 notes re-migrated across 2,738 contacts and routed to the right owner. All 9,337 of his, restored.</td></tr>
+      <tr><td>Membership exit history</td><td class="was">122 exit records against 760 in Zoho. The cancellations dashboard was effectively empty.</td><td class="now">640 records created in one run, exits at 762, chart populated 2018 to 2026.</td></tr>
+      <tr><td>Every new signup</td><td class="was">Monthly Payment, Annual Payment and Membership Date silently erased within a minute of checkout, for months.</td><td class="now">Zero records wiped after the fix, audited one by one across 677 members and 2,740 contacts.</td></tr>
+      <tr><td>Migrated task queue</td><td class="was">1,447 tasks with no assignee, invisible in everyone's filtered view.</td><td class="now">1,377 assigned to their true owner and verified individually.</td></tr>
+      <tr><td>The lead list, pre-import</td><td class="was">A duplicate flag marked 1,662 of 4,130 leads. The standing advice was to cut half.</td><td class="now">About 50 removed. 1,597 kept, because they shared an office line with a coworker, not an identity.</td></tr>
+      <tr><td>Where the sale happens</td><td class="was">Checkout in Kajabi, so the CRM got date, payment and tier secondhand. The root of every sync problem.</td><td class="now">Native checkout on all five tiers. Data born clean at the point of sale.</td></tr>
+      <tr><td>Reporting</td><td class="was">No history older than the migration. "Consultations collapsed" was the working theory.</td><td class="now">Two custom objects carrying 20 monthly rollups and 3,094 legacy leads. Consultations had doubled; the drop was everyone but the salesperson abandoning the old booking tool.</td></tr>
+      <tr><td>The account itself</td><td class="was">61 workflows, 208 custom fields, 2,604 contacts, 678 member records (June 2026).</td><td class="now">116 workflows with 93 published, 242 fields, four custom objects, 4,256 contacts, 3,029 member records (27 Sep 2026).</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<section class="wine">
+  <div class="wrap">
+    <div class="kicker">Volume</div>
+    <h2>What a full migration actually adds up to.</h2>
+    <div class="vol">
+      <div class="c"><div class="n">27,627</div><div class="k">notes recovered and routed, of 45,875 in the legacy system</div></div>
+      <div class="c"><div class="n">9,179</div><div class="k">CRM records reconciled across both systems</div></div>
+      <div class="c"><div class="n">4,130</div><div class="k">leads matched on email, phone, name and company before import</div></div>
+      <div class="c"><div class="n">1,597</div><div class="k">leads a raw duplicate flag would have deleted. All kept.</div></div>
+      <div class="c"><div class="n">1,377</div><div class="k">migrated tasks assigned to their true owner, verified individually</div></div>
+      <div class="c"><div class="n">6,211</div><div class="k">custom object records across four objects</div></div>
+      <div class="c"><div class="n">43</div><div class="k">funnel and retention emails, hand-built then rebuilt natively</div></div>
+      <div class="c"><div class="n">179 MB</div><div class="k">legacy data archived field-complete, ten days early</div></div>
+      <div class="c"><div class="n">0</div><div class="k">unintended emails or texts during the exit import of 747 contacts</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="files">
+  <div class="wrap">
+    <div class="kicker">Case files</div>
+    <h2>The problems that actually mattered.</h2>
+    <p class="lead">Four of the first five are problems the client did not know existed. Anyone can point and click a CRM into shape. Catching the thing quietly eating data on the way through is the part that protects a business.</p>
+
+    <div class="case">
+      <span class="tag bad">Data integrity</span><div class="meta">Resolved 7 July 2026 · audit log, cloned draft, one-by-one verification</div>
+      <h3>A workflow that succeeded every time, and erased three fields every time it did.</h3>
+      <div class="grid">
+        <div class="blk"><div class="t">The situation</div><p>New members arrived with blank Monthly Payment, Annual Payment and Membership Date. The integration wrote them correctly at checkout, and thirty seconds later they were gone. Records looked half-filled rather than broken, which is why it survived.</p></div>
+        <div class="blk"><div class="t">Why it was hard</div><p>The culprit was a legitimate workflow stamping Role on a new member. Its update action carried three extra rows with no value. In GoHighLevel an empty update row does not mean leave it alone, it means write blank. The run history looked green every time.</p></div>
+      </div>
+      <div class="out"><div class="t">Outcome</div><p>Cloned to a draft first for rollback, three rows deleted, the legitimate action untouched. Zero records wiped after the fix, proven across 677 members and 2,740 contacts. Seven records still showed a blank; each was inspected, and the five real ones were routed to a separate backfill rather than folded into the win.</p></div>
+    </div>
+
+    <div class="case">
+      <span class="tag bad">Data recovery</span><div class="meta">Resolved 1 August 2026 · full legacy export, content matching, staged resumable posting</div>
+      <h3>Ninety-five percent of five years of note history was missing, and nobody knew.</h3>
+      <div class="grid">
+        <div class="blk"><div class="t">The situation</div><p>The client passed on a low-priority remark: the salesperson said a lot of his notes had not migrated. He was right, and it was worse than he knew. Zoho held 45,875 notes. GHL held 2,646, from an undocumented partial import.</p></div>
+        <div class="blk"><div class="t">What was done</div><p>Every note pulled and archived, making that file the only surviving copy. All 3,850 contacts matched by content. Routing by contact type, not by whoever typed the note, because authorship in the old system is history, not ownership.</p></div>
+      </div>
+      <div class="out"><div class="t">Outcome</div><p>27,627 notes posted across 2,738 contacts. All 9,337 of the salesperson's, and 18,290 for operations. Verified live in the interface and by re-pulling from the API twice. Delivered two days after a request the client had marked low priority.</p></div>
+    </div>
+
+    <div class="case">
+      <span class="tag">Judgement</span><div class="meta">Resolved 16 June 2026 · tiered match logic, one master file</div>
+      <h3>The duplicate flag that would have deleted a sixth of the lead list.</h3>
+      <div class="grid">
+        <div class="blk"><div class="t">The situation</div><p>An automated dedup flagged 1,662 of 4,130 leads. 1,597 of them were flagged only because they share a phone number with another lead. In home inspection that is almost always coworkers on one office line.</p></div>
+        <div class="blk"><div class="t">The principle</div><p>A duplicate flag is a question, not an instruction. Exact email is decisive, phone is a strong signal but unreliable for people, name plus company is strong, name alone is review only. The cost of a wrong delete and a wrong keep are not the same size.</p></div>
+      </div>
+      <div class="out"><div class="t">Outcome</div><p>About 50 leads removed before import. All 1,597 shared-phone leads kept. Nothing was deleted.</p></div>
+    </div>
+
+    <div class="case">
+      <span class="tag ok">Architecture</span><div class="meta">Shipped 16 to 22 July 2026 · five checkouts, reverse webhooks, old path kept as rollback</div>
+      <h3>Moving checkout to remove the root cause instead of patching the symptom.</h3>
+      <div class="grid">
+        <div class="blk"><div class="t">The situation</div><p>Every sync problem traced to one fact: the sale started in Kajabi, so the CRM got membership date, payment and tier secondhand. The vendor's own fix carried an August estimate.</p></div>
+        <div class="blk"><div class="t">What was done</div><p>Custom checkout pages for every tier matching the brand members already knew. Each fires a per-tier workflow that stamps tags, role, status, level, date and payment. A reverse webhook hands the course platform its grant. No card fields on the page, so no PCI liability.</p></div>
+      </div>
+      <div class="out"><div class="t">Outcome</div><p>Three tiers published by 16 July, all five cleared for live testing by the 22nd, three weeks ahead of the vendor's estimate. Existing subscribers kept billing where they were with no change.</p></div>
+    </div>
+
+    <div class="case">
+      <span class="tag bad">What went wrong</span><div class="meta">8 July 2026, reported the same week · the rule that came out of it</div>
+      <h3>Thirty emails I did not mean to send.</h3>
+      <div class="grid">
+        <div class="blk"><div class="t">What happened</div><p>During a routine tag cleanup on exited members, a published workflow enrolled 30 contacts and sent 30 "you have exited" emails to people who left long ago. Its trigger was Contact Tag with no tag named, which fires on any tag event, removal included. I had planned the write off a snapshot from an earlier session.</p></div>
+        <div class="blk"><div class="t">What I did</div><p>Reported it in that week's review under its own heading before anyone asked. Then wrote the rule: before any bulk tag write, re-pull the account in the same session, open every published workflow that could watch that tag, and unpublish it for the duration.</p></div>
+      </div>
+      <div class="out"><div class="t">Outcome</div><p>That rule is why the exit import of 747 contacts two weeks later ran with zero unintended sends, and why a later guard pass across 976 contacts sent nothing. The same failure has not recurred.</p></div>
+    </div>
+
+    <div class="case">
+      <span class="tag">Platform defect, proven</span><div class="meta">11 to 17 September 2026 · affiliate manager, order timestamps, the platform's own price data</div>
+      <h3>Tracking installed, every endpoint answering, and no commission ever created.</h3>
+      <div class="grid">
+        <div class="blk"><div class="t">The situation</div><p>The affiliate programme recorded nothing. The obvious reads were "the script is not installed" and "the cookie domain is wrong". Both were true once, both were fixed, and commissions still never appeared.</p></div>
+        <div class="blk"><div class="t">What was done</div><p>Proved the loader on every checkout, the cookie on the right domain, every affiliate endpoint returning 201, and the platform's own checkout recognising the session. Then a test purchase through a real affiliate link with the order timestamp, and the platform's price data showing annual variants can never earn commission at all.</p></div>
+      </div>
+      <div class="out"><div class="t">Outcome</div><p>Diagnosed to the platform's own conversion pipeline, packaged for the vendor's developers with a recorded walkthrough. Until they fix it the client has a manual ledger, and knows exactly which products it covers.</p></div>
+    </div>
+
+    <div class="case">
+      <span class="tag ok">Ops tooling</span><div class="meta">27 September 2026 · one read-only script, fifteen CSVs, run weekly</div>
+      <h3>The audit that finds the problem before the person does.</h3>
+      <div class="grid">
+        <div class="blk"><div class="t">The situation</div><p>Every request from the operations coordinator had the same shape. She touches one member, sees a field that looks wrong, and reports it after the fact. Blank teammate fields, an exit that never fired, a renamed contact, texts not arriving, a wrong reimbursement amount.</p></div>
+        <div class="blk"><div class="t">What was done</div><p>One script measures every one of those shapes account-wide in a single run: fill gaps, parent-child drift, exits without the guard tag, subscriptions whose email differs from the contact, payment saved as the discounted first charge, nameless duplicates, customers still worked as leads, unreachable recipients.</p></div>
+      </div>
+      <div class="out"><div class="t">Outcome</div><p>Its second run, two days after the first, caught two paying members whose contact records had been deleted in a cleanup pass, before either of them missed a reminder. That is the job: shipping a fix is easy, proving it stayed fixed is the work.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="limits">
+  <div class="wrap">
+    <div class="split">
+      <div>
+        <div class="kicker">Working around the platform</div>
+        <h2>Half of a good GoHighLevel build is knowing what it cannot do.</h2>
+        <p>When the platform has no logic for something, the choice is to tell the client no, or to build the missing piece outside it and wire it back in. Twenty Zapier integrations exist on this account because of the second choice.</p>
+        <ul class="checks">
+          <li>No "record was linked" trigger <span>so a Role change is the door into a webhook that fills the teammate's fields from the parent record, blanks only</span></li>
+          <li>No scheduler <span>so a weekly Zap re-sweeps partner links and a monthly one stamps tenure and purges stale tags</span></li>
+          <li>No dropdown writes from the native custom-object action <span>it reports success and writes nothing, so a webhook to the v2 API does it with a read-back</span></li>
+          <li>No duplicate-card bypass <span>the rule ignores card status, so a baseline snapshot was taken and the account setting flipped with a diff afterwards</span></li>
+          <li>No trigger on integration writes <span>Contact Changed does not fire for the course platform's writes, tag triggers do, and the exit path was rebuilt around that</span></li>
+        </ul>
+      </div>
+      <div style="text-align:center"><div class="circle"><div class="t">Integrations</div><div class="n">20</div><div class="k">Zapier bridges, 15 live</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="code">
+  <div class="wrap">
+    <div class="kicker">The code</div>
+    <h2>209 scripts. 52,595 lines. All of it against the live API.</h2>
+    <p class="lead">Bulk work does not belong in a workflow builder. Anything that touches thousands of records was written in Python, run from a terminal against the GoHighLevel and Zoho APIs, and built to the same pattern every time.</p>
+    <div class="steps">
+      <div class="step"><div class="num">plan</div><h3>Read-only</h3><p>Writes a snapshot to disk and says what would change. Nothing else.</p></div>
+      <div class="step"><div class="num">canary</div><h3>Three records</h3><p>Proves the write is a partial update, diffs every field, and stops for a human.</p></div>
+      <div class="step"><div class="num">go</div><h3>Read back every write</h3><p>Confirms each one before the next. Three failures in a row aborts. A short pull prints nothing.</p></div>
+    </div>
+    <p style="margin-top:22px">Then <b>verify</b> re-reads everything against the plan and <b>restore</b> puts it all back from the snapshot. Every run leaves a ledger, so a job that dies at record 900 of 4,000 resumes instead of double-writing. 149 of the scripts can write; 72 are read-only audits that run on a schedule.</p>
+    <pre>#!/usr/bin/env python3
+"""
+ieb_state_snapshot.py - the live-state snapshot + diff one-paste.
+
+WHY THIS EXISTS
+Every "how many are missing" question so far has been answered
+against a different snapshot, so the numbers never line up twice.
+This writes ONE timestamped state file per run, always the same
+shape, so any later run can be diffed against it.
+"""</pre>
+    <p style="margin-top:16px">The archive that made the cutover safe: ten days before the renewal, every module of the legacy system was pulled field-complete and written to disk in two formats. Notes 56,783 · Activities 44,468 · Calls 20,487 · Events 6,387 · Leads 4,483 · Campaigns 2,142 · Contacts 1,985 · Accounts 1,447 · six custom modules. 179 MB. When the note history turned out to be 95% missing three weeks later, that archive was the only surviving copy.</p>
+  </div>
+</section>
+
+<section class="alt" id="docs">
+  <div class="wrap">
+    <div class="kicker">Documentation</div>
+    <h2>A system nobody can operate is not delivered.</h2>
+    <div class="stats" style="margin-top:8px">
+      <div class="stat"><div class="n">278</div><div class="k">HTML build guides and specs</div></div>
+      <div class="stat"><div class="n">122</div><div class="k">workflows in the registry</div></div>
+      <div class="stat"><div class="n">53</div><div class="k">handoff documents</div></div>
+      <div class="stat"><div class="n">8</div><div class="k">vendor tickets with evidence</div></div>
+    </div>
+    <p style="margin-top:26px">Every build shipped with a written guide: the click path, the field IDs, the reason it was built that way, and the thing that will bite you if you change it. Client-facing and internal documents are separate files with separate voices. The platform's API exposes only a workflow's name and status, so a screenshot registry with a written entry per automation is the only record of what any of them does.</p>
+    <p>The engagement closed with a final audit: a scope-versus-shipped scorecard, every account figure with the date and method it was read, the open items with owners, the rulings that must not be re-raised, ranked handover risks, and an exit checklist. The method is written up as a reusable playbook for the next client.</p>
+  </div>
+</section>
+
+<section id="live">
+  <div class="wrap">
+    <div class="kicker">Verified live</div>
+    <h2>Read from the live account on 27 September 2026, not remembered.</h2>
+    <p>Most write-ups quote numbers from the day the work shipped. These were pulled through the platform's own API by a read-only script, and they get re-pulled every week. If a workflow gets unpublished or a guard tag gets stripped, it shows up in the next read rather than in a complaint six weeks later.</p>
+    <div class="scroll"><table>
+      <tr><th>Read</th><th style="text-align:right">Live value</th></tr>
+      <tr><td>Workflows, published of API-visible</td><td class="n">93 / 116</td></tr>
+      <tr><td>Contacts</td><td class="n">4,256</td></tr>
+      <tr><td>Custom objects, and records across them</td><td class="n">4 / 6,211</td></tr>
+      <tr><td>Contact custom fields</td><td class="n">242</td></tr>
+      <tr><td>Pipelines and opportunities</td><td class="n">9 / 1,291</td></tr>
+      <tr><td>Forms, funnels, calendars</td><td class="n">29 / 17 / 9</td></tr>
+      <tr><td>Zapier integrations, live of total</td><td class="n">15 / 20</td></tr>
+      <tr><td>Contacts still carrying the tag behind a past email incident</td><td class="n">0</td></tr>
+      <tr><td>Unqualified leads that entered a funnel since the guard was published</td><td class="n">0 of 24</td></tr>
+    </table></div>
+    <p>Drift is measured, not guessed. The Member object grows by two or three placeholder records a day from a workflow the client chose to keep. A platform behaviour with a known rate is a managed problem; the same behaviour undocumented is a surprise at 400 records.</p>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="kicker">Toolkit</div>
+    <h2>The builder for most of it. Real code for the rest.</h2>
+    <div class="tags">
+      <span>GoHighLevel v2 API</span><span>Custom objects &amp; associations</span><span>Workflow architecture</span><span>Python, stdlib only</span><span>Audit-log forensics</span><span>Zapier build, audit, repair</span><span>Kajabi integration</span><span>Zoho CRM v2 API</span><span>Custom HTML / CSS / JS</span><span>Webhook form architecture</span><span>MJML email</span><span>Deliverability &amp; domain warmup</span><span>CSV bulk import design</span><span>Rate-limit aware retry</span><span>Data reconciliation</span><span>Dashboards &amp; reporting</span><span>Meta Lead Ads, pixel + CAPI</span><span>Stripe</span>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="contact">
+  <div class="wrap">
+    <div class="kicker">Available for GoHighLevel work</div>
+    <h2>If your system needs moving, rescuing, or someone who will actually verify it worked.</h2>
+    <p style="max-width:560px;margin:0 auto 26px">Migrations, rescue jobs, and the builds a previous contractor left half-finished. Project-based and retainer. Tell me what is broken.</p>
+    <a class="btn" href="mailto:tanbran2001@gmail.com">tanbran2001@gmail.com</a>
+    <a class="btn ghost" href="https://koalendar.com/e/meet-with-brandon-tan">Book a call</a>
+  </div>
+</section>
+
+<footer><div class="wrap row"><span>Brandon Tan · GoHighLevel &amp; Automation Specialist · Cabuyao, Laguna, PH (UTC+8)</span><span>Account figures verified live 27 Sep 2026 · No customer contact information appears in this document</span></div></footer>
+
+<script>
+(function(){
+  var links=[].slice.call(document.querySelectorAll('nav.top a'));
+  var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'));});
+  function on(){
+    var y=window.scrollY+90,i=0;
+    secs.forEach(function(s,k){if(s&&s.offsetTop<=y)i=k;});
+    links.forEach(function(a,k){a.classList.toggle('on',k===i);});
+  }
+  window.addEventListener('scroll',on,{passive:true});on();
+})();
+</script>
+</body>
+</html>
