@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Migration Risk Checker: CRM to GoHighLevel</title>
+<meta name="description" content="Free two-minute check. Answer twelve questions about your CRM to GoHighLevel migration and get the list of traps that apply to you, what breaks, and how each one gets handled. No signup, no AI, runs in your browser.">
+<meta property="og:title" content="Migration Risk Checker: CRM to GoHighLevel">
+<meta property="og:description" content="Twelve questions. The traps that apply to your migration, what breaks, and how each gets handled. Free, no signup.">
+<meta property="og:url" content="https://brandontankamao.github.io/check.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%238e2c46'/%3E%3Ctext x='32' y='43' font-family='Arial' font-weight='900' font-size='32' fill='%23fff' text-anchor='middle'%3EBT%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#fbf1e9; --cream-2:#f6e6da; --blush:#f3d3cf; --blush-2:#f8e4e1;
+    --wine:#8e2c46; --wine-2:#a83a57; --wine-deep:#6f2036;
+    --ink:#3a2229; --ink-2:#6b4b53; --ink-3:#9a7d84;
+    --white:#fffaf7; --line:#ecd9d3; --green:#2c8a5a; --amber:#b8741a; --red:#b42323;
+    --display:'Nunito',-apple-system,BlinkMacSystemFont,sans-serif;
+    --sans:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:76px}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+  a{color:var(--wine)}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px}
+  nav.top{position:sticky;top:0;z-index:50;background:rgba(251,241,233,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav.top .row{display:flex;align-items:center;gap:14px;height:62px}
+  nav.top .brand{font-family:var(--display);font-weight:900;color:var(--wine);font-size:1.05rem;white-space:nowrap;text-decoration:none}
+  nav.top .brand small{display:block;font-family:var(--sans);font-weight:600;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+  nav.top ul{list-style:none;margin:0 0 0 auto;padding:0;display:flex;gap:2px}
+  nav.top ul a{display:block;padding:7px 11px;border-radius:100px;font-size:.82rem;font-weight:600;color:var(--ink-2);text-decoration:none;white-space:nowrap}
+  nav.top ul a:hover{background:var(--blush-2);color:var(--wine)}
+  nav.top .book{flex-shrink:0;background:var(--wine);color:#fff;font-family:var(--display);font-weight:800;font-size:.84rem;padding:9px 16px;border-radius:100px;text-decoration:none;white-space:nowrap}
+  nav.top .book:hover{background:var(--wine-2)}
+  @media (max-width:560px){nav.top ul{display:none}}
+
+  .hero{position:relative;overflow:hidden;padding:64px 0 40px}
+  .hero .blob{position:absolute;border-radius:50%;background:var(--blush);z-index:0}
+  .hero .b1{width:520px;height:520px;right:-220px;top:-300px}
+  .hero .wrap{position:relative;z-index:1}
+  .eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--wine)}
+  h1{font-family:var(--display);font-weight:900;font-size:clamp(2.2rem,5.5vw,3.4rem);line-height:1.02;letter-spacing:-.02em;color:var(--wine);margin:12px 0 14px;max-width:18ch}
+  .sub{font-size:1.1rem;color:var(--ink-2);max-width:620px;margin:0}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .meta span{background:var(--white);border:1px solid var(--line);border-radius:100px;padding:6px 12px;font-size:.8rem;font-weight:600;color:var(--ink-2)}
+
+  .form{padding:10px 0 40px}
+  .q{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:20px 22px;margin-bottom:12px;box-shadow:0 6px 24px rgba(142,44,70,.04)}
+  .q .n{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+  .q h3{font-family:var(--display);font-weight:800;font-size:1.08rem;margin:4px 0 12px;color:var(--ink)}
+  .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .opts label{cursor:pointer}
+  .opts input{position:absolute;opacity:0;width:0;height:0}
+  .opts span{display:inline-block;border:2px solid var(--line);background:var(--cream);border-radius:100px;padding:9px 15px;font-size:.92rem;font-weight:600;color:var(--ink-2);transition:all .12s}
+  .opts input:checked+span{background:var(--wine);border-color:var(--wine);color:#fff}
+  .opts input:focus-visible+span{outline:3px solid var(--blush);outline-offset:2px}
+  .opts span:hover{border-color:var(--wine)}
+  .actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:22px}
+  .btn{display:inline-block;background:var(--wine);color:#fff;font-weight:800;font-family:var(--display);padding:15px 26px;border-radius:100px;text-decoration:none;font-size:1rem;box-shadow:0 10px 26px rgba(142,44,70,.28);border:0;cursor:pointer}
+  .btn:hover{background:var(--wine-2)}
+  .btn.ghost{background:transparent;color:var(--wine);border:2px solid var(--wine);box-shadow:none;padding:13px 24px}
+  .btn.ghost:hover{background:var(--blush-2)}
+  .btn.sm{padding:10px 18px;font-size:.88rem}
+  .hint{font-size:.88rem;color:var(--ink-3)}
+  .missing{border-color:var(--wine-2);box-shadow:0 0 0 3px var(--blush)}
+
+  #results{display:none;padding:10px 0 70px}
+  .score{display:grid;grid-template-columns:200px 1fr;gap:26px;align-items:center;background:var(--wine);color:#fff;border-radius:24px;padding:26px 28px;margin-bottom:26px;box-shadow:0 14px 40px rgba(142,44,70,.25)}
+  @media (max-width:640px){.score{grid-template-columns:1fr;text-align:center}}
+  .ring{width:170px;height:170px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,255,255,.1);border:6px solid rgba(255,255,255,.25);margin:0 auto}
+  .ring .v{font-family:var(--display);font-weight:900;font-size:3rem;line-height:1}
+  .ring .l{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--blush)}
+  .score h2{font-family:var(--display);font-weight:900;font-size:1.7rem;line-height:1.1;margin:0 0 8px;color:#fff}
+  .score p{color:var(--blush);margin:0 0 14px}
+  .score .btn{background:#fff;color:var(--wine);box-shadow:none;margin-right:8px}
+  .score .btn:hover{background:var(--blush-2)}
+  .score .btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.6)}
+
+  .group{margin-top:26px}
+  .group h2{font-family:var(--display);font-weight:900;font-size:1.3rem;margin:0 0 4px;display:flex;align-items:center;gap:10px}
+  .group .sub2{font-size:.9rem;color:var(--ink-3);margin:0 0 12px}
+  .pill{display:inline-block;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800;border-radius:100px;padding:4px 10px;color:#fff}
+  .pill.high{background:var(--red)} .pill.med{background:var(--amber)} .pill.low{background:var(--green)}
+  .trap{background:var(--white);border:1px solid var(--line);border-left:6px solid var(--line);border-radius:0 18px 18px 0;padding:18px 22px;margin-bottom:10px}
+  .trap.high{border-left-color:var(--red)} .trap.med{border-left-color:var(--amber)} .trap.low{border-left-color:var(--green)}
+  .trap h3{font-family:var(--display);font-weight:800;font-size:1.08rem;margin:0 0 8px;color:var(--ink)}
+  .trap .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:640px){.trap .row{grid-template-columns:1fr}}
+  .trap b{display:block;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:3px}
+  .trap p{margin:0;font-size:.95rem;color:var(--ink-2)}
+  .trap .why{font-size:.82rem;color:var(--ink-3);margin-top:10px;font-style:italic}
+
+  .cta{background:var(--cream-2);border-radius:24px;padding:34px 30px;text-align:center;margin-top:34px}
+  .cta h2{font-family:var(--display);font-weight:900;font-size:1.6rem;margin:0 0 8px;max-width:22ch;margin-left:auto;margin-right:auto}
+  .cta p{color:var(--ink-2);max-width:520px;margin:0 auto 18px}
+
+  footer{background:var(--wine-deep);color:var(--blush);padding:28px 0;font-size:.85rem}
+  footer .row{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+  footer a{color:#fff}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:10px 18px;border-radius:100px;font-size:.88rem;font-weight:600;opacity:0;transition:all .2s;pointer-events:none}
+  .toast.on{opacity:1;transform:translateX(-50%)}
+  @media print{nav.top,.form,.cta,footer,.score .btn{display:none}#results{display:block}body{background:#fff}}
+</style>
+</head>
+<body>
+
+<nav class="top"><div class="wrap row">
+  <a class="brand" href="index.html">Brandon Tan<small>GoHighLevel Specialist</small></a>
+  <ul>
+    <li><a href="index.html">Portfolio</a></li>
+    <li><a href="case-study.html">Case study</a></li>
+  </ul>
+  <a class="book" href="https://koalendar.com/e/meet-with-brandon-tan" target="_blank" rel="noopener">Book a call ↗</a>
+</div></nav>
+
+<header class="hero">
+  <div class="blob b1"></div>
+  <div class="wrap">
+    <div class="eyebrow">Free · two minutes · no signup</div>
+    <h1>Is your GoHighLevel migration going to bite you?</h1>
+    <p class="sub">Twelve questions about your setup. You get the list of traps that apply to you, what each one breaks, and how it gets handled. Every rule here is one I hit on a real migration, not a guess.</p>
+    <div class="meta"><span>Runs in your browser</span><span>Nothing is sent anywhere</span><span>Shareable result link</span></div>
+  </div>
+</header>
+
+<section class="form">
+  <div class="wrap">
+    <form id="f">
+      <div class="q" data-q="source"><div class="n">01</div><h3>What are you migrating from?</h3><div class="opts">
+        <label><input type="radio" name="source" value="zoho"><span>Zoho</span></label>
+        <label><input type="radio" name="source" value="hubspot"><span>HubSpot</span></label>
+        <label><input type="radio" name="source" value="ontraport"><span>Ontraport / ActiveCampaign / Keap</span></label>
+        <label><input type="radio" name="source" value="sheets"><span>Spreadsheets</span></label>
+        <label><input type="radio" name="source" value="other"><span>Another CRM</span></label>
+      </div></div>
+
+      <div class="q" data-q="size"><div class="n">02</div><h3>How many contacts?</h3><div class="opts">
+        <label><input type="radio" name="size" value="1"><span>Under 1,000</span></label>
+        <label><input type="radio" name="size" value="2"><span>1,000 to 5,000</span></label>
+        <label><input type="radio" name="size" value="3"><span>5,000 to 20,000</span></label>
+        <label><input type="radio" name="size" value="4"><span>20,000+</span></label>
+      </div></div>
+
+      <div class="q" data-q="notes"><div class="n">03</div><h3>Do you need the notes, call logs and task history to come across?</h3><div class="opts">
+        <label><input type="radio" name="notes" value="yes"><span>Yes, all of it</span></label>
+        <label><input type="radio" name="notes" value="unsure"><span>Not sure yet</span></label>
+        <label><input type="radio" name="notes" value="no"><span>No, contacts only</span></label>
+      </div></div>
+
+      <div class="q" data-q="objects"><div class="n">04</div><h3>Do you track things beyond contacts? Memberships, partners, deals with their own fields?</h3><div class="opts">
+        <label><input type="radio" name="objects" value="yes"><span>Yes</span></label>
+        <label><input type="radio" name="objects" value="unsure"><span>Not sure</span></label>
+        <label><input type="radio" name="objects" value="no"><span>No, contacts and tags are enough</span></label>
+      </div></div>
+
+      <div class="q" data-q="dropdowns"><div class="n">05</div><h3>Do those records use dropdown or multi-select fields (tier, status, years sponsored)?</h3><div class="opts">
+        <label><input type="radio" name="dropdowns" value="yes"><span>Yes</span></label>
+        <label><input type="radio" name="dropdowns" value="no"><span>No</span></label>
+        <label><input type="radio" name="dropdowns" value="unsure"><span>Not sure</span></label>
+      </div></div>
+
+      <div class="q" data-q="leads"><div class="n">06</div><h3>How warm is the list?</h3><div class="opts">
+        <label><input type="radio" name="leads" value="cold"><span>Mostly old or cold leads</span></label>
+        <label><input type="radio" name="leads" value="mixed"><span>Mixed</span></label>
+        <label><input type="radio" name="leads" value="warm"><span>Active customers and recent leads</span></label>
+      </div></div>
+
+      <div class="q" data-q="domain"><div class="n">07</div><h3>What is the email sending setup on the GoHighLevel side?</h3><div class="opts">
+        <label><input type="radio" name="domain" value="new"><span>New sending domain</span></label>
+        <label><input type="radio" name="domain" value="existing"><span>Existing domain with sending history</span></label>
+        <label><input type="radio" name="domain" value="none"><span>Not set up yet</span></label>
+      </div></div>
+
+      <div class="q" data-q="platform"><div class="n">08</div><h3>Is a course, membership or subscription platform in the loop? Kajabi, Teachable, Stripe subscriptions?</h3><div class="opts">
+        <label><input type="radio" name="platform" value="yes"><span>Yes</span></label>
+        <label><input type="radio" name="platform" value="no"><span>No</span></label>
+      </div></div>
+
+      <div class="q" data-q="deadline"><div class="n">09</div><h3>Is there a hard deadline, like a renewal date on the old CRM?</h3><div class="opts">
+        <label><input type="radio" name="deadline" value="4"><span>Under 4 weeks</span></label>
+        <label><input type="radio" name="deadline" value="8"><span>4 to 8 weeks</span></label>
+        <label><input type="radio" name="deadline" value="12"><span>8 weeks or more</span></label>
+        <label><input type="radio" name="deadline" value="none"><span>No deadline</span></label>
+      </div></div>
+
+      <div class="q" data-q="team"><div class="n">10</div><h3>Will the team keep editing records in the old system while the migration runs?</h3><div class="opts">
+        <label><input type="radio" name="team" value="yes"><span>Yes, business as usual</span></label>
+        <label><input type="radio" name="team" value="freeze"><span>We can freeze for a few days</span></label>
+        <label><input type="radio" name="team" value="no"><span>No, the old system is already idle</span></label>
+      </div></div>
+
+      <div class="q" data-q="method"><div class="n">11</div><h3>How is the data going in?</h3><div class="opts">
+        <label><input type="radio" name="method" value="csv"><span>CSV through the GHL importer</span></label>
+        <label><input type="radio" name="method" value="api"><span>Scripted through the API</span></label>
+        <label><input type="radio" name="method" value="tool"><span>A migration tool or Zapier</span></label>
+        <label><input type="radio" name="method" value="unsure"><span>Not decided</span></label>
+      </div></div>
+
+      <div class="q" data-q="live"><div class="n">12</div><h3>Does the GoHighLevel account already have live workflows?</h3><div class="opts">
+        <label><input type="radio" name="live" value="yes"><span>Yes, automations are running</span></label>
+        <label><input type="radio" name="live" value="no"><span>No, fresh account</span></label>
+      </div></div>
+
+      <div class="actions">
+        <button class="btn" type="submit">Show my risks</button>
+        <button class="btn ghost" type="button" id="reset">Clear</button>
+        <span class="hint" id="hint">All twelve, then the button.</span>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section id="results">
+  <div class="wrap">
+    <div class="score">
+      <div class="ring"><div class="v" id="scoreV">0</div><div class="l">risk score</div></div>
+      <div>
+        <h2 id="scoreH">Your migration</h2>
+        <p id="scoreP"></p>
+        <a class="btn sm" href="https://koalendar.com/e/meet-with-brandon-tan" target="_blank" rel="noopener">Book a call, bring this list</a>
+        <button class="btn sm ghost" type="button" id="copy">Copy link to this result</button>
+        <button class="btn sm ghost" type="button" id="print">Print</button>
+      </div>
+    </div>
+    <div id="groups"></div>
+    <div class="cta">
+      <h2>Want these handled before they cost you a week?</h2>
+      <p>Thirty minutes. Tell me about the migration, I tell you which of these I would fix first and roughly what it takes. The case study with the numbers is one click away.</p>
+      <a class="btn" href="https://koalendar.com/e/meet-with-brandon-tan" target="_blank" rel="noopener">Book a call</a>
+      <a class="btn ghost" href="case-study.html">Read the case study</a>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap row"><span>Brandon Tan · GoHighLevel &amp; Automation Specialist</span><span><a href="mailto:tanbran2001@gmail.com">tanbran2001@gmail.com</a> · Rules last checked against a live account, Sep 2026</span></div></footer>
+<div class="toast" id="toast">Link copied</div>
+
+<script>
+(function(){
+  var keys=['source','size','notes','objects','dropdowns','leads','domain','platform','deadline','team','method','live'];
+  var form=document.getElementById('f');
+  var results=document.getElementById('results');
+
+  var rules=[
+    {id:'zip',sev:'high',when:function(a){return a.method==='csv'||a.method==='unsure'||a.method==='tool';},
+      t:'Leading zeros vanish from zip codes',
+      breaks:'Opening the export in Excel before upload turns 01234 into 1234. It looks fine in the preview and every New England and Puerto Rico address lands wrong. You find out from a returned mailer months later.',
+      fix:'The migration file is never opened in Excel. It is checked and cleaned by script, and a sample of postal codes is read back from the account after the import.',
+      why:'Learned on the first migration file. Every file since has been checked by script, never by eye.'},
+    {id:'objects',sev:'high',when:function(a){return a.objects==='yes'&&a.size>=2;},
+      t:'Bulk import does not create the linked records',
+      breaks:'You import contacts expecting the membership or partner record to appear alongside each one, the way it does when you add a single contact. At bulk scale it does not fire. You end up with hundreds of contacts and no record behind them, and the dashboards built on those records read zero.',
+      fix:'Object records are created in a separate scripted pass with the association written explicitly, then counted against the contact list until the two match.',
+      why:'135 contacts were missing their record after a 348-contact import. Found by counting, not by noticing.'},
+    {id:'objects-unsure',sev:'med',when:function(a){return a.objects==='unsure';},
+      t:'Decide the data model before the first row goes in',
+      breaks:'If memberships, deals or partners end up as tags on the contact, you lose history, dates and the ability to build a dashboard on them. Moving them into proper records later means touching every contact twice.',
+      fix:'Half a day on the model first: which things are records, which are fields, which are tags. The import is built to that model, once.',
+      why:''},
+    {id:'dropdowns',sev:'high',when:function(a){return a.dropdowns==='yes';},
+      t:'Dropdown and multi-select fields on records cannot be written by the API',
+      breaks:'The workflow action that updates a record returns success and writes nothing to a dropdown. The API accepts the call and writes nothing to a multi-select. You only see it when someone opens a record and the field is empty.',
+      fix:'Dropdowns go through a webhook that calls the API with the exact option key. Multi-selects are loaded by CSV import, which is the one path that writes them, with the rule that an empty cell clears the field and a filled cell appends to it.',
+      why:'Proven with eight payload shapes on a live account. Silent success is worse than an error.'},
+    {id:'dropdowns-unsure',sev:'low',when:function(a){return a.dropdowns==='unsure'&&a.objects!=='no';},
+      t:'Check your field types before you plan any automation on them',
+      breaks:'Dropdowns and multi-selects on records have write paths the builder does not tell you about. A workflow can look correct and do nothing.',
+      fix:'Every field on every record type is listed with its type before the build, and the ones that need a workaround are marked.',
+      why:''},
+    {id:'cold-new',sev:'high',when:function(a){return (a.leads==='cold'||a.leads==='mixed')&&(a.domain==='new'||a.domain==='none');},
+      t:'Cold leads on a new domain will burn your sender reputation',
+      breaks:'Thousands of old leads land in the account with tags that match the nurture triggers, and the sequences fire the same day on a domain with no history. Bounces and complaints spike, the domain gets throttled, and your real customer emails go with it.',
+      fix:'Imported leads land with a quarantine tag that no sequence reads. The domain warms on real customer mail first. Cold segments are released in stages with bounce and complaint rates checked between each.',
+      why:'0.78% bounce and 0.018% complaints on 16,984 delivered, because the cold list never touched the sequences.'},
+    {id:'cold-existing',sev:'med',when:function(a){return (a.leads==='cold'||a.leads==='mixed')&&a.domain==='existing';},
+      t:'Cold leads still need a quarantine tag, even on a warm domain',
+      breaks:'A domain with good history survives one bad send. It does not survive a nurture sequence hitting 2,000 dead addresses over a week.',
+      fix:'Cold segments land with a hold tag, get list-hygiene checks, and are released in batches once the bounce rate on the first batch is known.',
+      why:''},
+    {id:'domain-none',sev:'high',when:function(a){return a.domain==='none';},
+      t:'No sending domain means no email on launch day',
+      breaks:'SPF, DKIM and DMARC take DNS changes that someone with registrar access has to make, and propagation is not instant. If it is not done before cutover, onboarding emails to new signups fail or land in spam on day one.',
+      fix:'DNS is the first ticket in the project, not the last. Records are verified with an external check, not just the green tick in the builder, and root-domain DMARC gets set so human mail does not softfail either.',
+      why:'A root DMARC record missing on a client domain meant every human-sent email was softfailing SPF while the platform emails looked fine.'},
+    {id:'notes',sev:'high',when:function(a){return a.notes==='yes';},
+      t:'Notes and history do not come across with contacts',
+      breaks:'The contact importer takes fields. It does not take notes, call logs or tasks. A migration tool often takes the last note or the first 500. Five years of context is gone the day the old CRM is cancelled, and nobody notices until a sales rep opens a record.',
+      fix:'Notes are pulled per contact through the source API, matched to the new contact by a stable key, written through the API, and counted: notes in the source, notes written, notes read back. Cancellation waits for the count to match.',
+      why:'27,627 notes across 2,738 contacts were recovered from an archive taken three weeks before the old CRM was cancelled. A prior import had carried 5% of them.'},
+    {id:'notes-unsure',sev:'med',when:function(a){return a.notes==='unsure';},
+      t:'Decide about notes before the old CRM is cancelled, not after',
+      breaks:'There is no getting them back once the subscription ends. Deciding later is deciding no.',
+      fix:'A full archive of the source (contacts, notes, tasks, deals, attachments) is taken to disk before anything is cancelled, whether or not it gets migrated. Storage is cheap. Regret is not.',
+      why:''},
+    {id:'deadline4',sev:'high',when:function(a){return a.deadline==='4';},
+      t:'Under four weeks: archive first, then migrate',
+      breaks:'On a compressed timeline the temptation is to migrate straight from the live source. If the renewal lapses before the last pass, anything not yet copied is gone.',
+      fix:'Day one is a complete export to disk. The migration then runs from the archive, and the renewal date stops being a data-loss risk and becomes only a schedule risk.',
+      why:''},
+    {id:'deadline8',sev:'med',when:function(a){return a.deadline==='8';},
+      t:'Four to eight weeks is enough, if the phases are ordered right',
+      breaks:'The usual failure is building automations first and migrating data last, so the automations are tested on an empty account and break on real data in the final week.',
+      fix:'Data model first, a sample migration second, automations built against real records, full migration last with a verify pass. Team training happens on the real account.',
+      why:''},
+    {id:'team',sev:'med',when:function(a){return a.team==='yes';},
+      t:'Two sources of truth while the migration runs',
+      breaks:'Every record edited in the old CRM after the export is a record that is now wrong in the new one. With a team working normally for two weeks, that can be hundreds.',
+      fix:'A delta pass: the export timestamp is recorded, and anything modified in the source after it is re-pulled and re-applied just before cutover. Or a short freeze window if the team can take it.',
+      why:''},
+    {id:'freeze',sev:'low',when:function(a){return a.team==='freeze';},
+      t:'A freeze window works, if it is short and announced',
+      breaks:'Freezes that run long get ignored, and then you are back to two sources of truth without knowing it.',
+      fix:'The freeze is scheduled for the final pass only, usually 48 hours, with a delta check afterwards regardless.',
+      why:''},
+    {id:'platform',sev:'high',when:function(a){return a.platform==='yes';},
+      t:'Payment and membership fields will fight over who owns them',
+      breaks:'The course platform sends a tag or webhook on checkout. A workflow in GoHighLevel updates the contact. A sync workflow copies fields between records. One of them runs last and overwrites the others, and the field it clears is usually the payment amount or the membership date. It happens on every signup, silently.',
+      fix:'One system is named source of truth per field, the sync direction is drawn on paper before anything is built, and the first ten real signups are read back field by field. Where possible checkout moves into GoHighLevel so the fields are born correct.',
+      why:'A workflow was wiping three fields on every new signup for months. Zero wipes across 677 members after the fix.'},
+    {id:'live',sev:'high',when:function(a){return a.live==='yes';},
+      t:'Live workflows will treat imported contacts as new signups',
+      breaks:'A contact-created or tag-added trigger does not know the difference between a real signup and row 2,314 of your import. Onboarding emails, welcome SMS and task creation fire for people who joined in 2021.',
+      fix:'Triggers are paused or guarded with an import-batch condition before the first row goes in. Imported contacts carry a batch ID, and a guard tag stops every send-capable workflow until it is deliberately removed.',
+      why:'640 member records created in one run with zero unintended emails, because the exit-email guard was built before the import, not after.'},
+    {id:'dupes',sev:'med',when:function(a){return a.size>=3||a.leads==='cold'||a.source==='sheets';},
+      t:'Duplicate detection will merge people who are not the same person',
+      breaks:'The built-in duplicate rule matches on phone and email. Franchises, spouses and offices share a phone line. One click on "merge duplicates" and a sixth of the leads collapse into each other.',
+      fix:'Matching is tiered by confidence: exact email first, then name plus phone, then phone only as a review list, never auto-merged. The review list goes to a human before anything is deleted.',
+      why:'1,597 leads shared an office phone line. Flagged as duplicates by the platform. None of them were.'},
+    {id:'big',sev:'med',when:function(a){return a.size>=4;},
+      t:'At this size, the tooling has to be resumable',
+      breaks:'Rate limits, a timeout at row 14,000, a pagination bug that silently returns half the list. If the script cannot resume from where it stopped, you re-run from zero and create duplicates.',
+      fix:'Every pass writes a ledger of what it has done and picks up from the last row. Every page pull is counted against the source total. A run that does not match the count does not get called finished.',
+      why:'A timezone bug in a pager silently returned 2,392 of 4,112 contacts. Caught because the count was checked, not trusted.'},
+    {id:'batch',sev:'low',when:function(a){return true;},
+      t:'Tag every imported record with a batch ID',
+      breaks:'"Imported from Zoho" as a tag gets reused across three attempts and you can no longer tell which rows came from which run, or roll one back.',
+      fix:'Each run gets a unique batch ID written to a field, so any run can be listed, verified or reversed on its own.',
+      why:''},
+    {id:'zoho',sev:'low',when:function(a){return a.source==='zoho';},
+      t:'Zoho: modules export separately and the API paginates in its own way',
+      breaks:'Contacts, Leads, Deals, Notes, Tasks and custom modules are separate exports with separate IDs. Notes reference their parent by module and ID, so a contacts-only export leaves the notes orphaned.',
+      fix:'Every module is pulled through the API with IDs intact, and the cross-references are resolved before anything is written to the new account. Zoho Books stubs and empty custom modules are checked for real data before they are counted.',
+      why:''},
+    {id:'hubspot',sev:'low',when:function(a){return a.source==='hubspot';},
+      t:'HubSpot: associations and timeline do not fit in a CSV',
+      breaks:'Contact to company to deal associations, and the engagement timeline, come out flat or not at all in a standard export.',
+      fix:'Associations are pulled through the API and rebuilt as record links on the new side, and the timeline is exported as notes with dates preserved.',
+      why:''},
+    {id:'sheets',sev:'med',when:function(a){return a.source==='sheets';},
+      t:'Spreadsheets have no stable IDs',
+      breaks:'The same person appears in three tabs with three spellings. Without an ID there is nothing to match on except email, and half the rows have no email.',
+      fix:'A cleaning pass builds a key per row, dedupes across tabs, and produces a review list of the rows that could not be matched with confidence.',
+      why:''},
+    {id:'method',sev:'low',when:function(a){return a.method==='unsure';},
+      t:'Pick the import path by size, not by habit',
+      breaks:'CSV is fine to about 5,000 clean contacts with no notes. Beyond that, or with notes and records involved, the importer becomes the bottleneck and the error reporting is not enough to trust.',
+      fix:'Under 5,000 with contacts only: CSV, cleaned by script first. Anything else: scripted through the API with a plan, a canary run and a verify pass.',
+      why:''}
+  ];
+
+  function answers(){
+    var a={};
+    keys.forEach(function(k){var el=form.querySelector('input[name='+k+']:checked');a[k]=el?el.value:null;});
+    a.size=a.size?parseInt(a.size,10):0;
+    return a;
+  }
+  function encode(a){return keys.map(function(k){return a[k]==null?'':String(a[k]);}).join('.');}
+  function decode(s){var p=s.split('.');if(p.length!==keys.length)return null;var a={};keys.forEach(function(k,i){a[k]=p[i]||null;});return a;}
+
+  function render(a){
+    var hits=rules.filter(function(r){return r.when(a);});
+    var w={high:3,med:2,low:1};
+    var score=hits.reduce(function(s,r){return s+w[r.sev];},0);
+    var highs=hits.filter(function(r){return r.sev==='high';}).length;
+    document.getElementById('scoreV').textContent=score;
+    var h,p;
+    if(highs>=4){h='This one needs a plan before it needs a start.';p=highs+' high-severity traps apply. Each of them has cost a real client data, deliverability or weeks. Handled in the right order they are routine. Handled in the wrong order they are the project.';}
+    else if(highs>=2){h='Manageable, with two or three things done in the right order.';p=highs+' high-severity traps apply. The good news is they are all known, and the fixes are cheap when they happen before the import instead of after.';}
+    else if(highs===1){h='A clean migration with one thing to watch.';p='One high-severity trap applies. Get that one right and the rest is process.';}
+    else{h='Low risk. Process and a verify pass will carry it.';p='Nothing here is high severity. The items below are the habits that keep it that way.';}
+    document.getElementById('scoreH').textContent=h;
+    document.getElementById('scoreP').textContent=p;
+    var g=document.getElementById('groups');g.innerHTML='';
+    [['high','High severity','Data loss, deliverability damage, or silent corruption. Handle before the first row goes in.'],['med','Medium','Costs you days or a cleanup pass if missed. Cheap to prevent.'],['low','Good habits','Not dangerous on their own. They are the difference between a migration you can verify and one you have to trust.']].forEach(function(s){
+      var list=hits.filter(function(r){return r.sev===s[0];});
+      if(!list.length)return;
+      var d=document.createElement('div');d.className='group';
+      d.innerHTML='<h2><span class="pill '+s[0]+'">'+s[1]+'</span> '+list.length+' item'+(list.length>1?'s':'')+'</h2><p class="sub2">'+s[2]+'</p>';
+      list.forEach(function(r){
+        var t=document.createElement('div');t.className='trap '+r.sev;
+        t.innerHTML='<h3>'+r.t+'</h3><div class="row"><div><b>What breaks</b><p>'+r.breaks+'</p></div><div><b>How I handle it</b><p>'+r.fix+'</p></div></div>'+(r.why?'<div class="why">'+r.why+'</div>':'');
+        d.appendChild(t);
+      });
+      g.appendChild(d);
+    });
+    results.style.display='block';
+    location.hash=encode(a);
+    results.scrollIntoView({behavior:'smooth'});
+  }
+
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var a=answers();var ok=true;
+    keys.forEach(function(k){var q=form.querySelector('[data-q='+k+']');var miss=(a[k]==null||a[k]===0);q.classList.toggle('missing',miss);if(miss)ok=false;});
+    if(!ok){document.getElementById('hint').textContent='A couple are still blank, they are outlined.';form.querySelector('.missing').scrollIntoView({behavior:'smooth',block:'center'});return;}
+    render(a);
+  });
+  form.addEventListener('change',function(e){var q=e.target.closest('.q');if(q)q.classList.remove('missing');});
+  document.getElementById('reset').addEventListener('click',function(){form.reset();results.style.display='none';history.replaceState(null,'',location.pathname);document.getElementById('hint').textContent='All twelve, then the button.';window.scrollTo({top:0,behavior:'smooth'});});
+  document.getElementById('copy').addEventListener('click',function(){
+    var u=location.href;
+    function done(){var t=document.getElementById('toast');t.classList.add('on');setTimeout(function(){t.classList.remove('on');},1600);}
+    if(navigator.clipboard){navigator.clipboard.writeText(u).then(done);}else{prompt('Copy this link',u);}
+  });
+  document.getElementById('print').addEventListener('click',function(){window.print();});
+
+  if(location.hash.length>1){
+    var a=decode(location.hash.slice(1));
+    if(a){
+      var complete=true;
+      keys.forEach(function(k){var el=form.querySelector('input[name='+k+'][value="'+a[k]+'"]');if(el)el.checked=true;else complete=false;});
+      if(complete){a.size=parseInt(a.size,10);render(a);}
+    }
+  }
+})();
+</script>
+</body>
+</html>
