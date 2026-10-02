@@ -155,12 +155,12 @@
     <div class="eyebrow">Case study · CRM migration · Zoho One to GoHighLevel</div>
     <h1>Moved a five-tier coaching business, live, without dropping a signup.</h1>
     <p class="sub">Inspector Empire Builder ran its whole membership operation on Zoho One. A renewal date forced the cutover. This is what moving it into GoHighLevel actually took, with the numbers attached and re-read from the live account.</p>
-    <div class="byline"><span><b>Brandon Tan</b>, GoHighLevel &amp; Automation Specialist</span><span>GoScale, May 2026 to present</span><span>Figures verified live 27 Sep 2026</span></div>
+    <div class="byline"><span><b>Brandon Tan</b>, GoHighLevel &amp; Automation Specialist</span><span>April 2026 to present</span><span>Figures verified live 27 Sep 2026</span></div>
     <div class="stats">
       <div class="stat"><div class="n">4,256</div><div class="k">contacts live</div></div>
       <div class="stat"><div class="n">93</div><div class="k">published workflows</div></div>
       <div class="stat"><div class="n">27,627</div><div class="k">notes recovered</div></div>
-      <div class="stat"><div class="n">5</div><div class="k">membership tiers moved</div></div>
+      <div class="stat"><div class="n">209</div><div class="k">scripts written</div></div>
     </div>
   </div>
 </header>
@@ -338,14 +338,14 @@
 <section id="code">
   <div class="wrap">
     <div class="kicker">The code</div>
-    <h2>Python for the bulk work. All of it against the live API.</h2>
+    <h2>209 scripts. 52,595 lines. All of it against the live API.</h2>
     <p class="lead">Bulk work does not belong in a workflow builder. Anything that touches thousands of records was written in Python, run from a terminal against the GoHighLevel and Zoho APIs, and built to the same pattern every time.</p>
     <div class="steps">
       <div class="step"><div class="num">plan</div><h3>Read-only</h3><p>Writes a snapshot to disk and says what would change. Nothing else.</p></div>
       <div class="step"><div class="num">canary</div><h3>Three records</h3><p>Proves the write is a partial update, diffs every field, and stops for a human.</p></div>
       <div class="step"><div class="num">go</div><h3>Read back every write</h3><p>Confirms each one before the next. Three failures in a row aborts. A short pull prints nothing.</p></div>
     </div>
-    <p style="margin-top:22px">Then <b>verify</b> re-reads everything against the plan and <b>restore</b> puts it all back from the snapshot. Every run leaves a ledger, so a job that dies at record 900 of 4,000 resumes instead of double-writing.</p>
+    <p style="margin-top:22px">Then <b>verify</b> re-reads everything against the plan and <b>restore</b> puts it all back from the snapshot. Every run leaves a ledger, so a job that dies at record 900 of 4,000 resumes instead of double-writing. 149 of the scripts can write; 72 are read-only audits that run on a schedule.</p>
     <pre>#!/usr/bin/env python3
 """
 ieb_state_snapshot.py - the live-state snapshot + diff one-paste.
