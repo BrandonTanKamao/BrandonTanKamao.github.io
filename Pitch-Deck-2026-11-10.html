@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Brandon Tan | Systems for membership businesses</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script id="deck-data" type="application/json">{
+ "client": {
+  "who": "A US membership coaching company in a trades niche. Five paid membership tiers, a partner and sponsor program, a sales team running paid social ads, and a course platform that had to stay.",
+  "stack": "GoHighLevel as the CRM, Kajabi as the course platform, Zapier between them, Stripe for payments, Calendly and GHL calendars for bookings, a legacy Zoho CRM being retired.",
+  "scale": [
+   [
+    "4,500+",
+    "contacts"
+   ],
+   [
+    "3,100+",
+    "company records"
+   ],
+   [
+    "3,200+",
+    "record links"
+   ],
+   [
+    "140+",
+    "workflows in the account"
+   ],
+   [
+    "220+",
+    "triggers"
+   ]
+  ]
+ },
+ "systems": {
+  "sync": {
+   "name": "Two-way data sync",
+   "tag": "Custom-object architecture",
+   "hook": "What happens when a member is a company, not a person?",
+   "problem": "A membership belonged to a business, and a business could have two owners, a team and shared partner contacts. The CRM only knew people. Every fact lived twice and the two copies drifted.",
+   "built": "A company record for every membership, linked to its people. Ten sync workflows moving facts up (person to company) and down (company to people), fourteen more mirroring partner fields, and two webhook Zaps running one shared script that checks the source state before it writes anything.",
+   "clever": "Tags used as one-shot doorbells, removed once heard. One trigger per dropdown value to beat the slug-versus-label problem. Triggers kept asymmetric so a downward write can never create an upward event. The script refuses to write unless the source record really says what the request claims.",
+   "numbers": [
+    [
+     "3,100+",
+     "company records"
+    ],
+    [
+     "3,200+",
+     "record links"
+    ],
+    [
+     "77",
+     "object triggers"
+    ],
+    [
+     "0",
+     "sync loops in production"
+    ]
+   ],
+   "transfer": "The object map (which record owns which fact, which way it flows, what fires it) is written before workflow one. The doorbell and per-value mirror patterns copy straight into any account with custom objects."
+  },
+  "migration": {
+   "name": "Migration and data integrity",
+   "tag": "CRM migration and data rescue",
+   "hook": "How much of your history survives the move?",
+   "problem": "Years of notes, contacts and sponsor history in a CRM with a renewal date. Spreadsheets stripping leading zeros off zip codes. An automation quietly writing one hard-coded value over real data.",
+   "built": "A scripted migration with staged modes (plan, go, verify, restore) so every write could be previewed and rolled back. An account-wide audit that found what was wrong before anyone noticed. A reconciliation across three systems.",
+   "clever": "Every repair script writes a ledger first and refuses to run twice. Findings are tagged by how they were established (measured, documented, inferred) so a guess never gets quoted as a fact. A retractions file keeps every wrong call so it is never repeated.",
+   "numbers": [
+    [
+     "27,627",
+     "of 27,627 notes migrated, verified twice"
+    ],
+    [
+     "200+",
+     "scripts, 50,000+ lines"
+    ],
+    [
+     "3",
+     "paying members' records rescued"
+    ],
+    [
+     "365 to 0",
+     "guard gap closed"
+    ],
+    [
+     "0.78%",
+     "bounce rate, limit 2%"
+    ]
+   ],
+   "transfer": "The staged-write discipline and the audit scripts are reusable with a new account id. The migration checklist already lists the traps (zip codes, silent API no-ops, blocked re-entry, async create)."
+  },
+  "audit": {
+   "name": "Automation health audit",
+   "tag": "Productized account audits",
+   "hook": "Who knows what your 140 workflows actually do right now?",
+   "problem": "Nobody could say what the account did end to end. Screenshots went stale the day they were taken. Problems surfaced when a member complained.",
+   "built": "A dump of every workflow canvas and trigger in about 100 seconds, rendered to a readable tree, run through 28 automated data checks and a ranked findings list, then diffed week over week.",
+   "clever": "The renderer resolves every id to a name, so the output reads like documentation. Each finding carries a jurisdiction (mine to fix, or report with the fix attached). A by-design list stops closed items from being re-raised.",
+   "numbers": [
+    [
+     "142",
+     "workflows dumped and rendered"
+    ],
+    [
+     "20",
+     "workflow findings, 6 critical"
+    ],
+    [
+     "28",
+     "data checks on 4,500+ contacts"
+    ],
+    [
+     "100 s",
+     "to pull the whole account"
+    ]
+   ],
+   "transfer": "Same pipeline, new location id. It is the kickoff checklist for any account I take over and the monthly deliverable on a retainer."
+  },
+  "onboarding": {
+   "name": "Member onboarding spine",
+   "tag": "Onboarding automation for memberships",
+   "hook": "What happens in the first 45 days after someone pays?",
+   "problem": "Checkout lived on the course platform, members were added to the CRM by hand, and the ops team chased surveys, kickoff calls and portal access manually.",
+   "built": "Four tier checkouts in the CRM that write the member record, grant course access through a reverse webhook, start a welcome and survey sequence, book and remind for the kickoff call, assign the ops team's tasks, and hand off to 300 days of retention touches.",
+   "clever": "Rejoiners are handled at checkout (old exit tags stripped, cancellation date cleared) so a returning member does not get a goodbye email. Retention is driven off a custom date so history could be backfilled and every existing member enrolled on day one.",
+   "numbers": [
+    [
+     "4",
+     "tier checkouts"
+    ],
+    [
+     "48",
+     "course grants automated in 90 days, against 57 new memberships"
+    ],
+    [
+     "291",
+     "paying memberships kept correct"
+    ],
+    [
+     "5",
+     "retention touchpoints to day 300"
+    ]
+   ],
+   "transfer": "The checkout to grant to onboarding chain is the same for any membership or course business. Only the tier names and copy change."
+  },
+  "partner": {
+   "name": "Partner and sponsor operations",
+   "tag": "Partner program operations",
+   "hook": "How many partner deadlines does your team chase by email?",
+   "problem": "Sponsors, podcast guests and magazine submissions tracked across a sheet, a legacy CRM and inboxes. Reminders sent by hand every quarter.",
+   "built": "A partner company record with fourteen mirrored fields, a sponsorship purchase flow that creates the pipeline card and notifies the team, podcast booking and publish notices, and quarterly submission reminders that stop themselves when the partner submits.",
+   "clever": "The reminder audience is a tag, the stop condition is a tag, and the quarter's dates live in three custom values. Changing the quarter is three fields, not a rebuild.",
+   "numbers": [
+    [
+     "14",
+     "partner field mirrors"
+    ],
+    [
+     "1,185",
+     "delivered on the first full-list send"
+    ],
+    [
+     "15.9%",
+     "open rate"
+    ],
+    [
+     "3",
+     "fields to change per quarter"
+    ]
+   ],
+   "transfer": "Any association or sponsor program: the record, the mirror, the purchase flow and the self-stopping reminders."
+  },
+  "reporting": {
+   "name": "Reporting",
+   "tag": "KPI dashboards with history",
+   "hook": "Can your growth team see last year next to this month?",
+   "problem": "The CRM could only chart from its own start date. Eighteen months of call, lead and consultation history sat in the old system.",
+   "built": "A lead history object and a monthly rollup object loaded from the old CRM's exports, five dashboard widgets on top, and the forward feed wired to the same definitions so the chart has no seam at go-live.",
+   "clever": "A custom date field accepts any date, so history was backfilled record by record. The rollup object only exists for ratios the chart tool cannot compute. Answer rate uses a 30 second cutoff agreed with the client, not the platform default.",
+   "numbers": [
+    [
+     "3,094",
+     "leads of backfilled history"
+    ],
+    [
+     "20",
+     "monthly rollups"
+    ],
+    [
+     "5",
+     "widgets"
+    ],
+    [
+     "13,000+",
+     "calls summarized"
+    ]
+   ],
+   "transfer": "The backfill method works for any CRM switch where the client wants history on day one."
+  }
+ },
+ "how": [
+  [
+   "Read the record before flagging it",
+   "A list view is not evidence. I open the record, check who created it and when, then speak."
+  ],
+  [
+   "Preview every write",
+   "Plan, go, verify, restore. Nothing bulk runs without a dry run and an archive."
+  ],
+  [
+   "Tag every claim",
+   "Measured, documented or inferred. The third kind never reaches a client."
+  ],
+  [
+   "Only fix what I built",
+   "Anything else gets reported with the fix attached. You stay in control of your account."
+  ],
+  [
+   "Keep a rulings file",
+   "Decisions are dated and kept, so closed questions stay closed."
+  ],
+  [
+   "Audit from the system, not screenshots",
+   "Dump, render, check, diff. Weekly."
+  ]
+ ],
+ "debug": {
+  "hook": "Can you debug the platform itself, or only the workflows on it?",
+  "lead": [
+   "Found a HighLevel bug and got it fixed",
+   "An RSS email campaign was rendering a block tag wrong on every send. I isolated it, wrote the reproduction with the raw feed and the rendered output, filed it, and when HighLevel shipped the fix I proved it on the next live send before telling the client it was done."
+  ],
+  "cards": [
+   [
+    "Support said one thing, the API said another",
+    "Support called a wrong SMS sender stamp a display quirk. I pulled the stored message records: three contacts with one owner showed five different senders across 82 messages. The stamp follows the sending number, and I had the data to show it."
+   ],
+   [
+    "714 skipped emails, one real cause",
+    "Support said the skips were already-sent contacts. That explained 152 of 714. The platform's own skipped export showed 351 unmailable contacts as the real cause."
+   ],
+   [
+    "\"Our emails are going to spam\"",
+    "They were not. Same domain, same sender, both months. The statistics dashboard showed 0.78% bounce and 0.018% complaints. The only change was list size. The fix was list hygiene, not a new domain."
+   ]
+  ]
+ },
+ "variants": {
+  "membership": {
+   "label": "Membership or coaching owner",
+   "opening": "Your members pay every month. Who is watching the first 45 days?",
+   "pain": "Checkout on one platform, members added to the CRM by hand, onboarding chased by email, nobody following up at day 60 or day 180. The team is busy and members still fall through.",
+   "lead": [
+    "onboarding",
+    "sync",
+    "partner"
+   ],
+   "headline": [
+    [
+     "48 of 57",
+     "new memberships processed end to end, no human in the loop"
+    ],
+    [
+     "300",
+     "days of retention touches, built once"
+    ],
+    [
+     "291",
+     "paying memberships kept correct across 3,100+ company records"
+    ]
+   ],
+   "objection": [
+    "We already have workflows in GHL.",
+    "Most accounts do. The question is whether they handle a rejoiner, a second owner on the same company, or a member who buys twice. I audit what is there first and only build what is missing."
+   ],
+   "offer": [
+    "Onboarding and retention install",
+    "Fixed scope, fixed price. Checkout to course access to onboarding to retention, with the audit of your current account included."
+   ]
+  },
+  "agency": {
+   "label": "GHL agency owner",
+   "opening": "Which of your client accounts would break if one trigger had no filter?",
+   "pain": "Client accounts grow past what the team can hold in their heads. Custom objects are out of reach. Something breaks and the client finds it first.",
+   "lead": [
+    "sync",
+    "audit",
+    "migration"
+   ],
+   "headline": [
+    [
+     "142",
+     "workflows audited in one pass"
+    ],
+    [
+     "48",
+     "findings, each with a fix attached"
+    ],
+    [
+     "3,200+",
+     "record links kept in sync without a loop"
+    ]
+   ],
+   "objection": [
+    "Our builders can do this.",
+    "Then the audit costs you one report and confirms it. If it does not, you get the findings ranked and the fixes written up. Either way you know."
+   ],
+   "offer": [
+    "White-label backend build or audit retainer",
+    "Monthly dump and findings on your client accounts, fixes shipped under your name, custom-object builds when the brief needs them."
+   ]
+  },
+  "migration": {
+   "label": "Business switching CRMs",
+   "opening": "What would losing 27,000 notes cost you?",
+   "pain": "The renewal date is fixed. Years of notes, history and sponsor data have to arrive intact. Nobody on the team has done a migration before and the vendor's importer does not say what it dropped.",
+   "lead": [
+    "migration",
+    "reporting",
+    "sync"
+   ],
+   "headline": [
+    [
+     "27,627",
+     "of 27,627 notes moved, verified twice"
+    ],
+    [
+     "3,094",
+     "leads of history restored to the new dashboard"
+    ],
+    [
+     "3",
+     "members' records rescued from a bad automation"
+    ]
+   ],
+   "objection": [
+    "The importer handles it.",
+    "The importer returned 200 OK on writes that saved nothing, three different ways. Every one of them is documented and checked for before a load runs."
+   ],
+   "offer": [
+    "Fixed-scope migration",
+    "Export, map, staged load with preview and rollback, verification report, and the dashboard history backfilled."
+   ]
+  },
+  "ops": {
+   "label": "Ops-heavy founder",
+   "opening": "How many tools does your team re-type the same member into?",
+   "pain": "Course platform, payments, calendars, Zapier and the CRM each hold a version of the truth. Double entry every week and no dashboard anyone trusts.",
+   "lead": [
+    "onboarding",
+    "reporting",
+    "partner"
+   ],
+   "headline": [
+    [
+     "21",
+     "Zaps, 419 tasks in 90 days, no unresolved errors"
+    ],
+    [
+     "5",
+     "dashboard widgets with 18 months of history"
+    ],
+    [
+     "3",
+     "fields to change per quarter instead of a rebuild"
+    ]
+   ],
+   "objection": [
+    "We tried Zapier and it broke.",
+    "Zaps break when they trust their input. Mine check the source record first, cap their writes and log a report. The sync Zaps here ran 178 times in 90 days with one error, fixed the same week."
+   ],
+   "offer": [
+    "Integration and reporting build",
+    "Fixed scope: the platforms wired to the CRM with guards, the manual steps removed, and a dashboard with your history on it."
+   ]
+  }
+ },
+ "order": [
+  "membership",
+  "agency",
+  "migration",
+  "ops"
+ ],
+ "koa": "https://koalendar.com/e/meet-with-brandon-tan",
+ "site": "https://brandontankamao.github.io/"
+}</script>
+<style>
+:root{--cream:#fbf1e9;--wine:#8e2c46;--blush:#f3d3cf;--ink:#2b1a20;--mute:#6f5b61;--white:#fffaf6}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--cream);color:var(--ink);font-family:'DM Sans',system-ui,-apple-system,Segoe UI,sans-serif;font-size:17px;line-height:1.5}
+h1,h2,h3,.disp{font-family:'Nunito','DM Sans',system-ui,sans-serif;font-weight:800;letter-spacing:-.01em;margin:0}
+a{color:var(--wine)}
+.pill{display:inline-block;background:var(--wine);color:#fff;border-radius:999px;padding:.7em 1.5em;font-weight:700;text-decoration:none}
+.pill.ghost{background:transparent;color:var(--wine);border:2px solid var(--wine)}
+.tag{display:inline-block;background:var(--blush);color:var(--wine);border-radius:999px;padding:.25em .9em;font-weight:700;font-size:.8em}
+.card{background:var(--white);border-radius:22px;padding:1.4em 1.6em;box-shadow:0 2px 0 rgba(142,44,70,.08)}
+.card.blush{background:var(--blush)}
+.grid{display:grid;gap:1em}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.num{font-family:'Nunito',sans-serif;font-weight:900;font-size:2.4em;color:var(--wine);line-height:1}
+.lbl{color:var(--mute);font-size:.92em;margin-top:.3em}
+.mute{color:var(--mute)}
+
+body{overflow:hidden;height:100vh}
+#bar{position:fixed;top:0;left:0;right:0;height:56px;display:flex;align-items:center;gap:1em;padding:0 1.2em;background:var(--cream);z-index:5}
+#bar .brand{font-family:Nunito,sans-serif;font-weight:900;color:var(--wine);font-size:1.1em;text-decoration:none}
+#bar select{margin-left:auto;font:inherit;padding:.4em .9em;border-radius:999px;border:2px solid var(--wine);background:var(--white);color:var(--wine);font-weight:700}
+#bar .ctr{color:var(--mute);font-size:.9em;min-width:4em;text-align:right}
+#stage{position:absolute;top:56px;left:0;right:0;bottom:0}
+.slide{position:absolute;inset:0;padding:3vh 6vw 80px;display:none;flex-direction:column;justify-content:center;gap:1.2em;max-width:1200px;margin:0 auto;overflow:auto}
+.slide.sys{justify-content:flex-start;gap:.8em;font-size:.9em}
+.slide.sys h2{font-size:clamp(1.3em,2.6vw,1.9em)}
+.slide.sys .card{padding:1em 1.2em}
+.slide.sys .card p{margin:.4em 0 0}
+.slide.sys .num{font-size:1.9em}
+.slide.on{display:flex}
+.slide h1{font-size:clamp(2em,5vw,3.6em);line-height:1.08}
+.slide h2{font-size:clamp(1.5em,3.2vw,2.4em);line-height:1.15}
+.slide p.big{font-size:1.25em;max-width:60ch}
+.hook{color:var(--wine);font-weight:700;font-size:1.05em}
+.nav{position:fixed;bottom:18px;right:24px;display:flex;gap:.5em}
+.nav button{font:inherit;border:2px solid var(--wine);background:var(--white);color:var(--wine);border-radius:999px;width:44px;height:44px;cursor:pointer;font-weight:700}
+.foot{position:fixed;bottom:22px;left:24px;color:var(--mute);font-size:.85em}
+@media print{body{overflow:visible;height:auto}#bar,.nav,.foot{display:none}#stage{position:static}.slide{display:flex;position:relative;min-height:100vh;page-break-after:always;max-width:none}}
+@media (max-width:760px){.g4,.g3,.g2{grid-template-columns:1fr 1fr}.slide{justify-content:flex-start;overflow:auto}}
+</style></head><body>
+<div id="bar"><a class="brand" href="https://brandontankamao.github.io/">Brandon Tan</a><span class="mute">Systems for membership businesses</span><select id="who" aria-label="Who is this for"></select><span class="ctr" id="ctr"></span></div>
+<div id="stage"></div>
+<div class="nav"><button id="prev" aria-label="Previous">&larr;</button><button id="next" aria-label="Next">&rarr;</button></div>
+<div class="foot">Arrow keys to move. Print to save as PDF.</div>
+<script>
+const D=JSON.parse(document.getElementById('deck-data').textContent);
+const sel=document.getElementById('who');
+for(const k of D.order){const o=document.createElement('option');o.value=k;o.textContent=D.variants[k].label;sel.appendChild(o);}
+const q=new URLSearchParams(location.search).get('for');
+let cur=D.order.includes(q)?q:D.order[0];sel.value=cur;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const nums=(a,c)=>'<div class="grid '+(c||'g4')+'">'+a.map(([n,l])=>'<div class="card"><div class="num">'+esc(n)+'</div><div class="lbl">'+esc(l)+'</div></div>').join('')+'</div>';
+const MAP="\n<svg viewBox=\"0 0 960 420\" width=\"100%\" role=\"img\" aria-label=\"Systems map\">\n<defs><marker id=\"a\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0L10 5L0 10z\" fill=\"#8e2c46\"/></marker></defs>\n<style>.b{fill:#fffaf6;stroke:#8e2c46;stroke-width:2;rx:16}.p{fill:#f3d3cf;stroke:#8e2c46;stroke-width:2;rx:16}.t{font:700 15px Nunito,DM Sans,sans-serif;fill:#2b1a20}.s{font:13px DM Sans,sans-serif;fill:#6f5b61}.l{stroke:#8e2c46;stroke-width:2;fill:none;marker-end:url(#a)}</style>\n<rect class=\"b\" x=\"20\" y=\"40\" width=\"170\" height=\"70\"/><text class=\"t\" x=\"105\" y=\"70\" text-anchor=\"middle\">Paid social ads</text><text class=\"s\" x=\"105\" y=\"92\" text-anchor=\"middle\">form submissions</text>\n<rect class=\"b\" x=\"20\" y=\"170\" width=\"170\" height=\"70\"/><text class=\"t\" x=\"105\" y=\"200\" text-anchor=\"middle\">Tier checkouts</text><text class=\"s\" x=\"105\" y=\"222\" text-anchor=\"middle\">4 pages, in the CRM</text>\n<rect class=\"b\" x=\"20\" y=\"300\" width=\"170\" height=\"70\"/><text class=\"t\" x=\"105\" y=\"330\" text-anchor=\"middle\">Legacy CRM export</text><text class=\"s\" x=\"105\" y=\"352\" text-anchor=\"middle\">notes, leads, history</text>\n<rect class=\"p\" x=\"300\" y=\"150\" width=\"200\" height=\"110\"/><text class=\"t\" x=\"400\" y=\"190\" text-anchor=\"middle\">Person record</text><text class=\"s\" x=\"400\" y=\"212\" text-anchor=\"middle\">status, tier, dates, tags</text><text class=\"s\" x=\"400\" y=\"232\" text-anchor=\"middle\">lead pipeline, tasks</text>\n<rect class=\"p\" x=\"600\" y=\"150\" width=\"200\" height=\"110\"/><text class=\"t\" x=\"700\" y=\"190\" text-anchor=\"middle\">Company record</text><text class=\"s\" x=\"700\" y=\"212\" text-anchor=\"middle\">one per membership</text><text class=\"s\" x=\"700\" y=\"232\" text-anchor=\"middle\">owners, team, survey</text>\n<rect class=\"b\" x=\"600\" y=\"20\" width=\"200\" height=\"70\"/><text class=\"t\" x=\"700\" y=\"50\" text-anchor=\"middle\">Partner record</text><text class=\"s\" x=\"700\" y=\"72\" text-anchor=\"middle\">14 mirrored fields</text>\n<rect class=\"b\" x=\"600\" y=\"320\" width=\"200\" height=\"70\"/><text class=\"t\" x=\"700\" y=\"350\" text-anchor=\"middle\">History and rollups</text><text class=\"s\" x=\"700\" y=\"372\" text-anchor=\"middle\">dashboard, 20 months</text>\n<rect class=\"b\" x=\"300\" y=\"320\" width=\"200\" height=\"70\"/><text class=\"t\" x=\"400\" y=\"350\" text-anchor=\"middle\">Course platform</text><text class=\"s\" x=\"400\" y=\"372\" text-anchor=\"middle\">access granted by webhook</text>\n<rect class=\"b\" x=\"840\" y=\"150\" width=\"100\" height=\"110\"/><text class=\"t\" x=\"890\" y=\"200\" text-anchor=\"middle\">Weekly</text><text class=\"t\" x=\"890\" y=\"220\" text-anchor=\"middle\">audit</text>\n<path class=\"l\" d=\"M190 75 C250 75 250 180 300 185\"/>\n<path class=\"l\" d=\"M190 205 L300 205\"/>\n<path class=\"l\" d=\"M190 335 C250 335 250 230 300 230\"/>\n<path class=\"l\" d=\"M500 190 L600 190\"/><path class=\"l\" d=\"M600 225 L500 225\"/>\n<path class=\"l\" d=\"M700 150 L700 90\"/><path class=\"l\" d=\"M700 260 L700 320\"/>\n<path class=\"l\" d=\"M400 260 L400 320\"/>\n<path class=\"l\" d=\"M800 205 L840 205\"/>\n<text class=\"s\" x=\"550\" y=\"178\" text-anchor=\"middle\">sync up</text><text class=\"s\" x=\"550\" y=\"246\" text-anchor=\"middle\">sync down</text>\n</svg>";
+function slides(v){
+ const V=D.variants[v],C=D.client,S=D.systems;
+ const out=[];
+ out.push('<div class="slide"><span class="tag">'+esc(V.label)+'</span><h1>'+esc(V.opening)+'</h1><p class="big">I build and run the backend systems for membership and coaching businesses on GoHighLevel. One client, two years of their data, every number below is from the account.</p><p><a class="pill" href="'+D.koa+'">Book a call</a></p></div>');
+ out.push('<div class="slide"><span class="hook">The problem</span><h2>'+esc(V.pain)+'</h2><p class="big mute">Sound familiar? Here is what it looked like at one client, and what it looks like now.</p></div>');
+ out.push('<div class="slide"><span class="hook">The client</span><h2>'+esc(C.who)+'</h2><p class="big">'+esc(C.stack)+'</p>'+nums(C.scale,'g5')+'</div>');
+ out.push('<div class="slide"><span class="hook">What runs now</span><h2>One map, nine systems, no double entry.</h2><div class="card" style="padding:1em">'+MAP+'</div></div>');
+ V.lead.forEach((k,i)=>{const s=S[k];out.push('<div class="slide sys"><span class="tag">'+esc(s.tag)+'</span><h2>'+esc(s.hook)+'</h2><div class="grid g2"><div class="card blush"><strong>Before</strong><p>'+esc(s.problem)+'</p></div><div class="card"><strong>Built</strong><p>'+esc(s.built)+'</p></div></div><div class="card"><strong>The part that takes experience</strong><p>'+esc(s.clever)+'</p></div>'+nums(s.numbers)+'</div>');});
+ out.push('<div class="slide sys"><span class="hook">Debugging</span><h2>'+esc(D.debug.hook)+'</h2><div class="card blush"><strong>'+esc(D.debug.lead[0])+'</strong><p>'+esc(D.debug.lead[1])+'</p></div><div class="grid g3">'+D.debug.cards.map(([t,d])=>'<div class="card"><strong>'+esc(t)+'</strong><p class="mute">'+esc(d)+'</p></div>').join('')+'</div></div>');
+ out.push('<div class="slide"><span class="hook">By the numbers</span><h2>What would these look like in your account?</h2>'+nums(V.headline,'g3')+'<p class="mute">Every figure is measured from the account or a dated record, and I can show the source on a call. No revenue claims: the client does not share revenue with me, so I do not quote it.</p></div>');
+ out.push('<div class="slide"><span class="hook">How I work</span><h2>Why does nothing break quietly?</h2><div class="grid g3">'+D.how.map(([t,d])=>'<div class="card"><strong>'+esc(t)+'</strong><p class="mute">'+esc(d)+'</p></div>').join('')+'</div></div>');
+ out.push('<div class="slide"><span class="hook">The objection</span><h2>&ldquo;'+esc(V.objection[0])+'&rdquo;</h2><p class="big">'+esc(V.objection[1])+'</p></div>');
+ out.push('<div class="slide"><span class="hook">Next step</span><h2>'+esc(V.offer[0])+'</h2><p class="big">'+esc(V.offer[1])+'</p><p><a class="pill" href="'+D.koa+'">Book a 20 minute call</a> &nbsp; <a class="pill ghost" href="'+D.site+'">See the portfolio</a></p></div>');
+ return out;
+}
+let i=0;const stage=document.getElementById('stage');
+function render(){stage.innerHTML=slides(cur).join('');show(0);}
+function show(n){const s=stage.children;i=Math.max(0,Math.min(s.length-1,n));for(let k=0;k<s.length;k++)s[k].classList.toggle('on',k===i);document.getElementById('ctr').textContent=(i+1)+' / '+s.length;}
+sel.onchange=()=>{cur=sel.value;history.replaceState(null,'','?for='+cur);render();};
+document.getElementById('prev').onclick=()=>show(i-1);document.getElementById('next').onclick=()=>show(i+1);
+addEventListener('keydown',ev=>{if(ev.key==='ArrowRight'||ev.key===' '||ev.key==='PageDown')show(i+1);if(ev.key==='ArrowLeft'||ev.key==='PageUp')show(i-1);if(ev.key==='Home')show(0);});
+render();
+</script></body></html>
